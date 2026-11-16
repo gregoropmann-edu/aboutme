@@ -279,42 +279,50 @@ I am a dedicated IT enthusiast and computer builder interested in the inner work
         <h2 data-lang="et">Galerii</h2>
         <h2 data-lang="en" style="display:none;">Gallery</h2>
 
-        <div class="gallery">
-            <figure>
+        <div class="gallery-slideshow" id="gallery-slideshow" tabindex="0" aria-roledescription="carousel" aria-label="Project gallery">
+            <div class="gallery" aria-live="polite">
+            <figure class="gallery-slide is-active" aria-hidden="false">
                 <img src="images/pc-build.png" alt="PC Build" loading="lazy">
                 <figcaption data-lang="et">Ise ehitatud arvuti</figcaption>
                 <figcaption data-lang="en" style="display:none;">Custom-built PC</figcaption>
             </figure>
-            <figure>
+            <figure class="gallery-slide" aria-hidden="true">
                 <img src="images/solar_powered_mini_fan.png" alt="Solar Fan" loading="lazy">
                 <figcaption data-lang="et">Päikeseenergial töötav ventilaator</figcaption>
                 <figcaption data-lang="en" style="display:none;">Solar-powered mini fan</figcaption>
             </figure>
-            <figure>
+            <figure class="gallery-slide" aria-hidden="true">
                 <img src="images/line_follower.png" alt="Arduino Robot" loading="lazy">
                 <figcaption data-lang="et">Arduino joonejärgija robot (pooleli)</figcaption>
                 <figcaption data-lang="en" style="display:none;">Arduino line-follower robot (WiP💔)</figcaption>
             </figure>
-            <figure>
+            <figure class="gallery-slide" aria-hidden="true">
                 <img src="images/teachersday.png" alt="Teachers Day" loading="lazy">
                 <figcaption data-lang="et">Õpetajate päev</figcaption>
                 <figcaption data-lang="en" style="display:none;">Teacher's day</figcaption>
             </figure>
-            <figure>
+            <figure class="gallery-slide" aria-hidden="true">
                 <img src="images/klassi_naljamees.png" alt="Joker" loading="lazy">
                 <figcaption data-lang="et">Klassi naljamees</figcaption>
                 <figcaption data-lang="en" style="display:none;">The Joker of the class</figcaption>
             </figure>
-            <figure>
+            <figure class="gallery-slide" aria-hidden="true">
                 <img src="images/pov-fedora.png" alt="Coding" loading="lazy">
                 <figcaption data-lang="et">Thonny</figcaption>
                 <figcaption data-lang="en" style="display:none;">Python</figcaption>
             </figure>
-            <figure>
+            <figure class="gallery-slide" aria-hidden="true">
                 <img src="images/laptop.png" alt="ArchPad" loading="lazy">
                 <figcaption data-lang="et">IdeaPad Slim 5 Arch</figcaption>
                 <figcaption data-lang="en" style="display:none;">IdeaPad Slim 5 Arch</figcaption>
             </figure>
+            </div>
+            <div class="gallery-controls">
+                <button type="button" id="gallery-prev" class="gallery-control" aria-label="Previous image">←</button>
+                <span id="gallery-status" class="gallery-status" aria-live="polite">1 / 7</span>
+                <button type="button" id="gallery-next" class="gallery-control" aria-label="Next image">→</button>
+            </div>
+            <div id="gallery-dots" class="gallery-dots" role="tablist" aria-label="Gallery slides"></div>
         </div>
     </section>
 

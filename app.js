@@ -6,13 +6,66 @@
       darkMode: 'Lülita tume režiim',
       lightMode: 'Lülita hele režiim',
       opening: 'Avamine...',
+      previousImage: 'Eelmine pilt',
+      nextImage: 'Järgmine pilt',
+      gallerySlides: 'Galerii slaidid',
     },
     en: {
       darkMode: 'Enable dark mode',
       lightMode: 'Enable light mode',
       opening: 'Opening...',
+      previousImage: 'Previous image',
+      nextImage: 'Next image',
+      gallerySlides: 'Gallery slides',
     },
   };
+
+  let gallerySlides = [];
+  let galleryDots = [];
+  let currentGallerySlide = 0;
+
+  function updateGalleryUI() {
+      if (!gallerySlides.length) return;
+
+      const lang = localStorage.getItem('preferred-lang') || 'et';
+      gallerySlides.forEach((slide, index) => {
+          const isActive = index === currentGallerySlide;
+          slide.classList.toggle('is-active', isActive);
+          slide.setAttribute('aria-hidden', String(!isActive));
+      });
+
+      galleryDots.forEach((dot, index) => {
+          const isActive = index === currentGallerySlide;
+          dot.classList.toggle('is-active', isActive);
+          dot.setAttribute('aria-selected', String(isActive));
+          dot.setAttribute('tabindex', isActive ? '0' : '-1');
+          dot.setAttribute('aria-label', `${translations[lang].gallerySlides} ${index + 1}`);
+      });
+
+      document.getElementById('gallery-status').textContent =
+          `${currentGallerySlide + 1} / ${gallerySlides.length}`;
+      document.getElementById('gallery-prev').setAttribute(
+          'aria-label',
+          translations[lang].previousImage
+      );
+      document.getElementById('gallery-next').setAttribute(
+          'aria-label',
+          translations[lang].nextImage
+      );
+      document.getElementById('gallery-dots').setAttribute(
+          'aria-label',
+          translations[lang].gallerySlides
+      );
+  }
+
+  function showGallerySlide(index) {
+      currentGallerySlide = (index + gallerySlides.length) % gallerySlides.length;
+      updateGalleryUI();
+  }
+
+  function moveGallerySlide(direction) {
+      showGallerySlide(currentGallerySlide + direction);
+  }
 
   let sessionStart = sessionStorage.getItem('sessionStartTime');
   if (!sessionStart) {
@@ -90,6 +143,36 @@ function setLanguage(lang) {
 
 const savedLang = localStorage.getItem('preferred-lang') || 'et';
 setLanguage(savedLang);
+
+gallerySlides = Array.from(document.querySelectorAll('.gallery-slide'));
+const galleryDotsContainer = document.getElementById('gallery-dots');
+gallerySlides.forEach((_, index) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'gallery-dot';
+    dot.setAttribute('role', 'tab');
+    dot.addEventListener('click', () => showGallerySlide(index));
+    galleryDotsContainer.appendChild(dot);
+    galleryDots.push(dot);
+});
+document.getElementById('gallery-prev').addEventListener('click', () => moveGallerySlide(-1));
+document.getElementById('gallery-next').addEventListener('click', () => moveGallerySlide(1));
+document.getElementById('gallery-slideshow').addEventListener('keydown', event => {
+    if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        moveGallerySlide(-1);
+    } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        moveGallerySlide(1);
+    } else if (event.key === 'Home') {
+        event.preventDefault();
+        showGallerySlide(0);
+    } else if (event.key === 'End') {
+        event.preventDefault();
+        showGallerySlide(gallerySlides.length - 1);
+    }
+});
+updateGalleryUI();
 
 document.getElementById('current-year').textContent = new Date().getFullYear();
 
